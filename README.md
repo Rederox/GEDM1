@@ -22,6 +22,7 @@ La base de données est conçue pour stocker les informations des utilisateurs, 
 - `Product`: Détails des produits chimiques vendus.
 - `File`: Fiches de données de sécurité (FDS) des produits.
 - `Notification`: Notifications envoyées aux clients pour les mises à jour des FDS.
+- `AccessFDS`: Enregistrements des accès des utilisateurs aux FDS des produits.
 
 ## Cas d'Utilisation
 
@@ -35,31 +36,4 @@ La base de données est conçue pour stocker les informations des utilisateurs, 
    Les utilisateurs peuvent gérer leur profil et consulter l'historique de leurs produits commandés.
 
 ## Maquette (Mockup)
-
-Une maquette de l'interface utilisateur est fournie pour illustrer l'interaction avec le système. (Inclure le lien ou les images des maquettes ici)
-
-## Démonstration en Direct
-
-Une démonstration en direct sera effectuée pour montrer le fonctionnement de la plateforme. Elle comprendra :
-- Accès et consultation des FDS.
-- Processus de notification lors d'une mise à jour de FDS.
-- Interaction avec l'interface utilisateur.
-
-## Problématiques Rencontrées et Solutions
-
-1. **Problématique 1**: (Description du problème et de la solution adoptée)
-2. **Problématique 2**: (Description du problème et de la solution adoptée)
-3. **Problématique 3**: (Description du problème et de la solution adoptée)
-
-## Appréciation de l'Équipe
-
-(Chaque membre de l'équipe écrira une appréciation sur le travail des autres membres, en soulignant leurs contributions et leurs compétences.)
-
-## Contact
-
-Pour toute question ou retour, veuillez contacter : alexandre.moittie@ensup.eu
-
----
-
-Ce README offre un aperçu du projet GED pour ChemicalBrothers, mettant en lumière les objectifs, la structure, et les fonctionnalités clés de la plateforme.
 
