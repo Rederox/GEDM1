@@ -27,20 +27,32 @@
     z-index: -1;
 }
 
+.home-content {
+    position: absolute;
+    top: 90px;
+    left: 25%;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 50px;
+
+}
+
 </style>
 
     <div class="d-flex col">
 		<div>
 			{% include 'home/components/sideBarHome.html.twig' %}
 		</div>
-		<div class="col">
-			<h1 class="text-center">Acceuil</h1>
-            <div class="d-flex justify-content-center">
-                {% include 'home/components/productCard.html.twig' %}
+		<div class="col home-content">
+			<h1 class="title">Accueil</h1>
+            <div class="home-grid">
+                
             </div>
-            <div class="blue-square-background"></div>
-            <div class="violet-square-background"></div>
 		</div>
+        <div class="blue-square-background"></div>
+        <div class="violet-square-background"></div>
 	</div>
 {% endblock %}
-    

@@ -40,6 +40,22 @@
 
 }
 
+.home-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: stretch;
+    padding: 20px;
+}
+
+.home-item {
+    text-align: center;
+    padding: 20px;
+    margin: 10px;
+    flex: 1 0 200px; /* flex-grow, flex-shrink, flex-basis */
+    box-sizing: border-box;
+}
+
 </style>
 
     <div class="d-flex col">
@@ -48,10 +64,14 @@
 		</div>
 		<div class="col home-content">
 			<h1 class="title">Mes fiches</h1>
-            <div class="d-flex justify-content-center gap-3">
-                {% include 'home/components/productCard.html.twig' %}
-                {% include 'home/components/productCard.html.twig' %}
-                {% include 'home/components/productCard.html.twig' %}
+            <div class="home-grid">
+                <div class="home-item">{% include 'home/components/productCard.html.twig' %}</div>
+                <div class="home-item">{% include 'home/components/productCard.html.twig' %}</div>
+                <div class="home-item">{% include 'home/components/productCard.html.twig' %}</div>
+                <div class="home-item">{% include 'home/components/productCard.html.twig' %}</div>
+                <div class="home-item">{% include 'home/components/productCard.html.twig' %}</div>
+                <div class="home-item">{% include 'home/components/productCard.html.twig' %}</div>
+                <div class="home-item">{% include 'home/components/productCard.html.twig' %}</div>
             </div>
 		</div>
         <div class="blue-square-background"></div>
