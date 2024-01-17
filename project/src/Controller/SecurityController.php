@@ -55,14 +55,14 @@ class SecurityController extends AbstractController
                 $hashPassword = $userPasswordHasher->hashPassword($user, $user->getPassword());
 
                 $user->setPassword($hashPassword);
-                $user->setRole("['ROLE_USER']");
+                $user->setRole("ROLE_USER");
 
                 $entityManager->persist($user);
                 $entityManager->flush();
                 return $this->redirectToRoute('app_login');
             }
 
-            $user->setRole("['ROLE_USER']");
+            $user->setRole("ROLE_USER");
 
             $entityManager->persist($user);
             $entityManager->flush();
