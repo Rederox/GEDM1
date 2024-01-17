@@ -19,7 +19,7 @@ class AccessFDS
 
     #[ORM\ManyToOne(inversedBy: 'accessFDS')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?product $product = null;
+    private ?Product $product = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $access_at = null;
@@ -41,12 +41,12 @@ class AccessFDS
         return $this;
     }
 
-    public function getProductId(): ?product
+    public function getProductId(): ?Product
     {
         return $this->product;
     }
 
-    public function setProductId(?product $product): static
+    public function setProductId(?Product $product): static
     {
         $this->product = $product;
 
