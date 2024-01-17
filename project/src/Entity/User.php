@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+//#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,7 +25,7 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $last_name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique:true)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -32,6 +36,14 @@ class User
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: AccessFDS::class)]
     private Collection $accessFDS;
+
+
+    /**
+     * @var string The hashed password
+     */
+    
+    #[ORM\Column(length: 255)]
+    private ?string $password = null;
 
     public function __construct()
     {
@@ -80,9 +92,13 @@ class User
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getRoles(): array
     {
-        return $this->role;
+        $role = [$this->role];
+        // guarantee every user at least has ROLE_USER
+        $role[] = 'ROLE_USER';
+
+        return array_unique($role);
     }
 
     public function setRole(?string $role): static
@@ -150,5 +166,31 @@ class User
         }
 
         return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
     }
 }
