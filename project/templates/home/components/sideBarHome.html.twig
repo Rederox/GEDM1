@@ -18,13 +18,18 @@
     justify-content: center;
 }
 
+.logo {
+    height: 150px;
+    width: 150px;
+}
+
 </style>
 
 
 <div id="sidebar" class="d-flex flex-column justify-content-evenly flex-shrink-0 p-3 bg-white text-black position-relative collapsed">
-    <div>
+    <div class="logo">
 
-        Chemical Brothers 🧪
+        <img src="{{ asset('assets/images/logo.png') }}" alt="logo" class="img-fluid">
 
     </div>
     <ul id="sidebarList" class="nav flex-column gap-3 mb-auto justify-content-center">
