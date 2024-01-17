@@ -3,6 +3,108 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
+
+<style>
+.container-login {
+    display: flex;
+    justify-content: center; /* Aligns children (form and image container) side by side */
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    padding: 0 50px; /* Add padding on the sides */
+    /*overflow:hidden;*/
+}
+
+.login-form {
+    display: flex;
+    justify-content: center; /* Aligns children (form and image container) side by side */
+    align-items: center;
+    width: 50%; /* Allows the form to grow and shrink as needed */
+    max-width: 350px; /* Max width of the form */
+    margin-right: 30px; /* Adds some space between form and image */
+    /* Rest of your form styling */
+    
+}
+}
+
+.image-container {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    /*max-width: 500px;*/ 
+    height: auto;
+    object-fit: cover;
+    /* You can add more styling if needed */
+    
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #333;
+    font-size: 14px;
+}
+
+input[type=text],
+input[type=password] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Added to keep padding inside the width */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: red;
+    margin-bottom: 15px;
+}
+
+
+
+</style>
+
+
+
+<div class="container-login">
+    <div class="login-form">
+    
     {# {% if error is defined and error != null %} #}
     {% if error != null %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -20,4 +122,11 @@
         
         <button tupe="submit">Connexion</button>
     </form>
+
+    </div>
+
+    <div class="image-container">
+        <img src="{{ asset('assets/images/login-image.png') }}" alt="scientist" width="100%" height="100%" >
+    </div>
+</div>
 {% endblock %}
