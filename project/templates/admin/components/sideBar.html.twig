@@ -1,0 +1,148 @@
+<style>
+	#sidebar {
+    width: 280px;
+    transition: width 0.3s ease;
+    height: 100vh;
+    position: fixed;
+    z-index: 100;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+#sidebar.collapsed {
+    width: 70px;
+}
+#sidebarToggle {
+    position: absolute;
+    top: 50%;
+    right: -10px; 
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: #FFF;
+    border: none;
+    outline: none;
+    z-index: 101;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 4px 0px 4px 0px rgba(0, 0, 0, 0.25);
+}
+#sidebar.collapsed #sidebarToggle i {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+#sidebar .nav-link span {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+}
+#sidebar.collapsed .nav-link span {
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+}
+#sidebar .bi {
+    font-size: 1.8em;
+}
+#sidebar .nav-link.active {
+    background: none;
+    color: #FFD700;
+}
+#sidebar .dropdown .dropdown-toggle {
+    width: 100%;
+    text-align: left;
+}
+#sidebar.collapsed .dropdown-toggle::after {
+    display: none;
+}
+#sidebar.collapsed #sidebarList {
+    align-items: center;
+}
+#sidebar.collapsed #homebar {
+    margin-right:0 !important;   
+}
+#sidebar.collapsed .bi {
+    font-size: 2em;
+}
+.nav-link {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.icon-circle {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-link i {
+    margin-right: 0px; /* Espace entre l'icône et le texte */
+}
+
+.righteous {
+    font-family: 'Righteous', regular;
+    font-size: 1em;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+
+</style>
+
+<div id="sidebar" class="d-flex flex-column justify-content-evenly flex-shrink-0 p-3 bg-white text-black position-relative collapsed">
+    <div id="sidebarToggle" class="bg-white rounded-circle">
+        <i class="bi-chevron-right text-black"></i>
+    </div>
+    <a href="{{ path('acceuil_admin') }}" id="homebar" class="d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none nav-link">
+        <i class="bi bi-house-fill text-darkBlue"></i>
+        <span class="righteous">Accueil</span>
+    </a>
+    <hr>
+    <ul id="sidebarList" class="nav flex-column gap-3 mb-auto justify-content-center">
+        <li class="nav-item">
+            <a href="{{ path('products_admin') }}" class="nav-link text-black" aria-current="page">
+                <div class="rounded-circle bg-orange icon-circle">
+                    <i class="bi bi-file-earmark-medical-fill text-white"></i>
+                </div>
+                <span class="righteous">Liste FDS</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('products_admin') }}" class="nav-link text-black">
+                <div class="rounded-circle bg-orange icon-circle">
+                    <i class="bi bi-people-fill text-white"></i>
+                </div>
+                <span class="righteous">Utilisateurs</span>
+            </a>
+        </li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-black text-decoration-none dropdown-toggle nav-link" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-gear-fill"></i>
+            <span>Paramètres</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="#">Paramètres</a></li>
+            <li><a class="dropdown-item" href="#">Profil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+        </ul>
+    </div>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', (event) => {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+    });
+});
+</script>

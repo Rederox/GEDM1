@@ -15,7 +15,10 @@
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.4.*",
         "symfony/runtime": "6.4.*",
-        "symfony/yaml": "6.4.*"
+        "symfony/twig-bundle": "6.4.*",
+        "symfony/webpack-encore-bundle": "^2.1",
+        "symfony/yaml": "6.4.*",
+        "twbs/bootstrap-icons": "^1.11"
     },
     "config": {
         "allow-plugins": {
@@ -66,6 +69,8 @@
         }
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.52"
+        "symfony/maker-bundle": "^1.52",
+        "symfony/stopwatch": "6.4.*",
+        "symfony/web-profiler-bundle": "6.4.*"
     }
 }
