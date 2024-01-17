@@ -1,0 +1,43 @@
+<style>
+
+.file-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-card_image {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.file-card_image img {
+    max-width: 200px;
+    height: auto;
+}
+
+/* Responsive styling using media query */
+@media (max-width: 768px) {
+    .file-card {
+        max-width: 100%; /* Make the card take up the full width on smaller screens */
+    }
+}
+
+/* Set max-width for the image to make it responsive */
+@media (max-width: 480px) {
+    .file-card_image img {
+        max-width: 100%; /* Make the image take up the full width of its container */
+        height: auto; /* Maintain the aspect ratio */
+    }
+}
+
+</style>
+
+<div class="file-card">
+    <h2>Fluorozène</h1>
+    <div class="file-card_image">
+        <img src="{{ asset('/assets/images/chemistry1.png') }}" alt="fluorozène">
+    </div>
+</div>
