@@ -1,17 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Acceuil
+{% block title %}Accueil
 {% endblock %}
 
+
+
+	
+
+
+
 {% block body %}
+	<style>
+		.fontRighteous{
+			font-family: 'Righteous', regular;
+		}
+	</style>
+
+
 	<div class="d-flex col">
 		<div>
 			{% include 'admin/components/sideBar.html.twig' %}
 		</div>
 		<div class="col">
-			<h1 class="text-center">Acceuil</h1>
-            <div class="d-flex justify-content-center bg-dark">
+			<h1 class="text-center">Accueil</h1>
+            <div class="d-flex justify-content-start m-5">
+				<div class='d-flex flex-row gap-5'>
+					<div class="bg-lighterBlue rounded-2 p-3">
+						<h4 class="text-start text-white fontRighteous fw-bold">Nombre d'utilisateurs</h4>
+						<h1 class="text-start fw-bold ">10</h1>
+					</div>
+					<div class="bg-lighterBlue rounded-2 p-3">
+						<h4 class="text-start text-white fontRighteous fw-bold">Nombre de produits</h4>
+						<h1 class="text-start fw-bold">10</h1>
+					</div>
+				</div>
+				<div class=''>
 
+				</div>
             </div>
 		</div>
 	</div>
