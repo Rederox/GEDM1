@@ -62,6 +62,8 @@
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+            text-decoration: none;
+            color: black;
 		}
 
 		.file-card:hover {
@@ -177,12 +179,12 @@
 			<div class="home-grid">
 				{% for file in files %}
 					<div class="home-item">
-						<div class="file-card" data-url="{{ file.getProductId().getFile() }}">
+						<a class="file-card" href="{{ path('product_client', {'id': file.getProductId().getId()}) }}" class="file-card">
 							<h2>{{ file.getProductId().getProductName() }}</h2>
 							<div class="file-card_image">
 								<img src="{{ file.getProductId().getImageUrl() }}" alt="{{ file.getProductId().getProductName() }}">
 							</div>
-						</div>
+						</a>
 					</div>
 				{% endfor %}
 			</div>
@@ -190,53 +192,6 @@
 		<div class="blue-square-background"></div>
 		<div class="violet-square-background"></div>
 	</div>
-
-	<script>
-
-		// download file from url given in parameter and save it in the downloads folder of the user
-function downloadFile(url) {
-var link = document.createElement('a');
-link.href = url;
-link.download = url.substr(url.lastIndexOf('/') + 1);
-link.click();
-}
-// use downloadFile function on click on the download file-card element
-document.querySelectorAll('.file-card').forEach(item => {
-item.addEventListener('click', event => {
-var imageUrl = item.getAttribute('data-url');
-downloadFile(imageUrl);
-})
-});
-
-    document.addEventListener('DOMContentLoaded', function() {
-    var closeButtons = document.querySelectorAll('.closeButton');
-
-    closeButtons.forEach(function(button) {
-        button.addEventListener('click', function(event) {
-            var notificationDiv = this.closest('.notification-item');
-            var notificationId = notificationDiv.getAttribute('data-notification-id');
-            event.stopPropagation();
-            fetch('/api/notification/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ notificationId: notificationId }) // Modification ici
-            })
-            .then(response => response.json())
-            .then(data => {
-                notificationDiv.remove();
-                var messageLength = document.getElementById('messageLength');
-                messageLength.innerHTML = messageLength.innerHTML - 1;
-            })
-            .catch((error) => {
-                // Gérer les erreurs
-                console.error('Error:', error);
-            });
-        });
-    });
-});
-	</script>
 
 
 {% endblock %}

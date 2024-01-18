@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+
+<style>
+    .product-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        margin-left: 20%;
+    }
+    .product-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 50%;
+    }
+
+    .product-content h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 5rem;
+    }
+
+    .product-text {
+        margin-bottom: 2rem;
+    }
+
+    .product-text h2 {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+    .product-text p {
+        font-size: 1rem;
+        font-weight: normal;
+    }
+    .product-download {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20%;
+        height: 5rem;
+        background-color: #F2F2F2;
+        border-radius: 5px;
+        margin-left: 30%;
+        margin-top: 5rem;
+    }
+    .product-download:hover {
+        background-color: #E0E0E0;
+        cursor: pointer;
+    }
+
+</style>
+
+    <div class="d-flex col flex-column w-100">
+		<div>
+			{% include 'home/components/sideBarHome.html.twig' %}
+		</div>
+
+        <div class="product-container">
+            <div class="product-content">
+                <h1 class="">{{ product.getProductName() }}</h1>
+                <div class"product-text">
+                    <h2>Nom du produit :</h2>
+                    <p>{{ product.getProductName() }}</p>
+                </div>
+                <div class"product-text">
+                    <h2>Description du produit :</h2>
+                    <p>{{ product.getDescription() }}</p>
+                </div>
+            </div>
+            <div>
+                <img src="{{ product.getImageUrl() }}" alt="{{ product.getProductName() }}">
+            </div>
+        </div>
+        <div class="product-download">
+            Telecharger la fiche de sécurité
+        </div>
+    </div>
+{% endblock %}

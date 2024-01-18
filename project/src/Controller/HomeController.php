@@ -28,6 +28,17 @@ class HomeController extends AbstractController
         ]);
     }
 
+    // Dynamic route for product page (product/{id})
+    #[Route('/product/{id}', name: 'product_client')]
+    public function product(EntityManagerInterface $em, Request $request, $id): Response
+    {
+        $product = $em->getRepository(Product::class)->find($id);
+        return $this->render('home/pages/product.html.twig', [
+            'product' => $product,
+            'id' => $id,
+        ]);
+    }
+
     #[Route('/help', name: 'help')]
     public function help(): Response
     {
