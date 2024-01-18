@@ -24,9 +24,20 @@
          <div class="form-group product-form">
      <div class="d-block"> 
         <div class="text-darkBlue">
-            {{ form_label(productForm.file, 'Fiche de données de sécurités') }}
+            {{ form_label(productForm.fdsFile, 'Fiche de données de sécurités') }}
         </div>
-            {{ form_widget(productForm.file, {
+            {{ form_widget(productForm.fdsFile, {
+            attr: {
+                'class':'form-control'}
+            }) }}
+        </div>
+        </div>
+        <div class="form-group product-form">
+     <div class="d-block"> 
+        <div class="text-darkBlue">
+            {{ form_label(productForm.imageFile, 'Image du produit') }}
+        </div>
+            {{ form_widget(productForm.imageFile, {
             attr: {
                 'class':'form-control'}
             }) }}

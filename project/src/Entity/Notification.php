@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NotificationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Product;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
@@ -15,7 +16,7 @@ class Notification
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
-    private ?File $file = null;
+    private ?Product $product = null;
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
     private ?User $user = null;
@@ -34,14 +35,14 @@ class Notification
         return $this->id;
     }
 
-    public function getFileId(): ?File
+    public function getProductId(): ?Product
     {
-        return $this->file;
+        return $this->product;
     }
 
-    public function setFileId(?File $file): static
+    public function setProductId(?Product $product): static
     {
-        $this->file = $file;
+        $this->product = $product;
 
         return $this;
     }

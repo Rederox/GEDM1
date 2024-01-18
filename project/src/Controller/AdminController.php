@@ -8,12 +8,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Product;
 use App\Form\ProductsType;
 use App\Repository\ProductRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 
 class AdminController extends AbstractController
@@ -65,17 +66,23 @@ class AdminController extends AbstractController
         $productForm->handleRequest($request);
 
         if($productForm->isSubmitted() && $productForm->isValid()){
+        $product = $productForm->getData();
 
-        $file = $form->get('file')->getData();
+
         
         $em->persist($product);
         $em->flush();
 
         
-        }
-
+        
         $this->addFlash('success', 'Produit ajouté avec succès');
 
+        return $this->redirectToRoute('products_admin');
+        }
+
+    
+
+        
     
        
         return $this->render('admin/fds/addProduct.html.twig', [
@@ -84,26 +91,29 @@ class AdminController extends AbstractController
     }
 
     #[Route('admin/products/edit/{id}', name: 'edit_product_admin')]
-    public function editProduct(Product $product, Request $request, EntityManagerInterface $em): Response
+    public function editProduct(Product $product, Request $request, EntityManagerInterface $em, NotificationService $notificationService): Response
     {
         $productForm = $this->createForm(ProductsType::class, $product);
-
         $productForm->handleRequest($request);
 
-        if($productForm->isSubmitted() && $productForm->isValid()){
+        if ($productForm->isSubmitted() && $productForm->isValid()) {
+            $em->persist($product);
+            $em->flush();
 
-        $em->persist($product);
-        $em->flush();
+            // Obtenez la liste des utilisateurs ayant accès à ce produit
+            $users = $em->getRepository(AccessFDS::class)->findBy(['product' => $product->getId()]);
+            $file = $product->getFile();
 
+            foreach ($users as $access) {
+                $notificationService->createNotification($file, $access->getUserId(), "Le produit {$product->getProductName()} a été modifié.");
+            }
+
+            $this->addFlash('success', 'Produit modifié avec succès');
         }
-
-        $this->addFlash('success', 'Produit modifié avec succès');
-
-
 
         return $this->render('admin/fds/editProduct.html.twig', [
             'productForm' => $productForm->createView(),
             'product' => $product,
         ]);
-    }
+    } 
 }
