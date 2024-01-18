@@ -1,58 +1,248 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Hello HomeController!
+{% endblock %}
 
 {% block body %}
 
-<style>
+	<style>
 
-.blue-square-background {
-    background: #AEB8FE;
-    width: 80%;
-    height: 50%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-radius: 0 0 0 60px;
-    z-index: -2;
-}
-.violet-square-background {
-    background: #758BFD;
-    width: 25%;
-    height: 45%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-radius: 0 0 0 60px;
-    z-index: -1;
-}
+		.blue-square-background {
+			background: #AEB8FE;
+			width: 80%;
+			height: 50%;
+			position: absolute;
+			top: 0;
+			right: 0;
+			border-radius: 0 0 0 60px;
+			z-index: -2;
+		}
+		.violet-square-background {
+			background: #758BFD;
+			width: 25%;
+			height: 45%;
+			position: absolute;
+			top: 0;
+			right: 0;
+			border-radius: 0 0 0 60px;
+			z-index: -1;
+		}
 
-.home-content {
-    position: absolute;
-    top: 90px;
-    left: 25%;
-}
+		.home-content {
+			position: absolute;
+			top: 90px;
+			left: 25%;
+		}
 
-.title {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 50px;
+		.title {
+			font-size: 2rem;
+			font-weight: bold;
+			margin-bottom: 50px;
 
-}
+		}
 
-</style>
+		.home-grid {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			align-items: center;
+			gap: 50px;
+			max-width: 1200px;
+			
+		}
 
-    <div class="d-flex col">
+		.home-item {
+			text-align: center;
+		}
+
+		.home-item:hover {
+			scale: 1.1;
+			cursor: pointer;
+			transition: 0.3s ease-in-out;
+			shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+		}
+
+		.file-card {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+            text-decoration: none;
+            color: black;
+		}
+
+		.file-card:hover {
+			cursor: pointer;
+		}
+
+		.file-card h2 {
+			font-size: 1rem;
+			font-weight: bold;
+			margin-bottom: 20px;
+		}
+
+		.file-card_image {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-radius: 40px;
+		}
+
+		.file-card_image img {
+			width: 200px;
+			height: 290px;
+			border-radius: 40px;
+			object-fit: cover;
+		}
+
+		.bell {
+			position: fixed;
+			top: 20px;
+			right: 30px;
+			width: 40px;
+			height: 40px;
+            z-index: 100;
+		}
+
+		.dropdown-toggle::after {
+			display: none;
+		}
+
+		.dropdown-menu {
+			width: 300px;
+			height: 300px;
+			overflow-y: auto;
+            overflow-x: hidden;
+		}
+		.closeButton {
+			position: absolute;
+			top: -10px;
+			right: 0;
+			cursor: pointer;
+		}
+		.closeButton:hover {
+			color: #758BFD;
+		}
+
+		.searchInput {
+			width: 100% !important;
+			max-width: 500px !important;
+		}
+
+		/* Responsive styling using media query */
+		@media(max-width: 768px) {
+			.file-card {
+				max-width: 100%; /* Make the card take up the full width on smaller screens */
+			}
+		}
+
+		/* Set max-width for the image to make it responsive */
+		@media(max-width: 480px) {
+			.file-card_image img {
+				max-width: 100%; /* Make the image take up the full width of its container */
+				height: auto; /* Maintain the aspect ratio */
+			}
+			
+		}
+	</style>
+
+	<div class="d-flex col w-100">
 		<div>
 			{% include 'home/components/sideBarHome.html.twig' %}
 		</div>
-		<div class="col home-content">
-			<h1 class="title">Accueil</h1>
-            <div class="home-grid">
-                
+		<div class="bell dropdown">
+			<button type="button" class="btn btn-orange position-relative dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="bi bi-bell text-white"></i>
+				<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id='messageLength'>
+					{{ notifications|length }}
+				</span>
+			</button>
+
+            <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton">
+                <h6 class="text-center mb-3">Notifications</h6>
+                {% if notifications|length == 0 %}
+                    <p class="text-center">Vous n'avez pas de notifications</p>
+                {% else %}
+
+                    {% for notification in notifications %}
+                        <div class="bg-lightGray rounded p-2 mb-2 position-relative notification-item" data-notification-id="{{ notification.getId() }}">
+                            <div class="closeButton">
+                                <i class="bi bi-x text-drakBlue fs-3"></i>
+                            </div>
+                            <p class="mb-1 text-drakBlue text-wrap">{{ notification.getMessage() }}</p>
+                            <div class="d-flex justify-content-between">
+                                <span class="font-weight-bold">
+                                    Produit: Titre
+                                </span>
+                                <small class="text-muted">
+                                    {{ notification.getSendedAt()|date('d/m/Y H:i') }}
+                                </small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
+
 		</div>
-        <div class="blue-square-background"></div>
-        <div class="violet-square-background"></div>
+
+
+		<div class="col home-content position relative">
+			<h1 class="title m-0 mb-3">Mes fiches</h1>
+			<form action="{{ path('homepage') }}" method="get" class="searchInput d-flex justify-content-center align-items-center mb-3">
+				<div class="input-group border rounded-pill p-1 ">
+					<input type="search" name="search" placeholder="Rechercher" aria-describedby="button-addon3" class="form-control bg-transparent shadow-none text-white border-0" value="{{ app.request.query.get('search') }}">
+					<div class="input-group-append  border-0">
+						<button id="button-addon3" type="submit" class="btn btn-link text-dark fs-5">
+							<i class="bi bi-search"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+			<div class="home-grid">
+				{% for file in files %}
+					<div class="home-item">
+						<a class="file-card" href="{{ path('product_client', {'id': file.getProductId().getId()}) }}" class="file-card">
+							<h2>{{ file.getProductId().getProductName() }}</h2>
+							<div class="file-card_image">
+								<img class="img-fluid img-thumbnail" src="{{ file.getProductId().getImageUrl() }}" alt="{{ file.getProductId().getProductName() }}">
+							</div>
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="pagination_rounded">
+				<ul
+					class="d-flex col justify-content-center pagination text-center gap-3">
+					{# Pagination précédente #}
+					{% if files.currentPageNumber > 1 %}
+						<li class="page-item pageLi">
+							<a href="{{ path('homepage', {'page': files.currentPageNumber - 1}) }}" class="pageChanger">
+								<i class="bi bi-chevron-left"></i>
+							</a>
+						</li>
+					{% endif %}
+
+					{# Boucle sur les pages de pagination #}
+					{% for page in 1..files.pageCount %}
+						<li class="page-item pageLi {{ page == files.currentPageNumber ? 'active' : '' }}">
+							<a href="{{ path('homepage', {'page': page}) }}" class="pageChanger">{{ page }}</a>
+						</li>
+					{% endfor %}
+
+					{# Pagination suivante #}
+					{% if files.currentPageNumber < files.pageCount %}
+						<li class="page-item pageLi">
+							<a href="{{ path('homepage', {'page': files.currentPageNumber + 1}) }}" class="pageChanger">
+								<i class="bi bi-chevron-right"></i>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+		<div class="blue-square-background"></div>
+		<div class="violet-square-background"></div>
 	</div>
+
+
 {% endblock %}
