@@ -11,19 +11,41 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\accessFDS;
 use App\Entity\Notification;
 use App\Entity\Product;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
-    public function index(EntityManagerInterface $em, Request $request): Response
-    {
+    public function index(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator): Response
+    {   
         $getUserId = $this->getUser()->getId();
         $notifications = $em->getRepository(Notification::class)->findBy(['user' => $getUserId]);
         // dump($notifications);
+        $searchTerm = $request->query->get('search', '');
 
-        $files = $em->getRepository(accessFDS::class)->findBy(['user' => $getUserId]);
+        $queryBuilder = $em->getRepository(accessFDS::class)->createQueryBuilder('a')
+                  ->leftJoin('a.product', 'p') // Ensure this association is correctly defined in your entity
+                  ->where('a.user = :user')
+                  ->setParameter('user', $getUserId);
+
+if (!empty($searchTerm)) {
+    $queryBuilder->andWhere('p.product_name LIKE :term')
+                 ->setParameter('term', '%' . $searchTerm . '%');
+}
+
+
+        // Paginate the query
+        $page = $request->query->getInt('page', 1); // Get the current page or default to 1
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $page,
+            8          
+        );
+
+        // $files = $em->getRepository(accessFDS::class)->findBy(['user' => $getUserId]);
         return $this->render('home/index.html.twig', [
-            'files' => $files,
+            'files' => $pagination,
             'notifications' => $notifications,
         ]);
     }
