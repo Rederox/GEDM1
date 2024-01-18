@@ -14,6 +14,7 @@ use App\Entity\Product;
 use App\Form\ProductsType;
 use App\Repository\ProductRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Form\UserType;
 
 
 class AdminController extends AbstractController
@@ -106,4 +107,58 @@ class AdminController extends AbstractController
             'product' => $product,
         ]);
     }
+    #[Route('admin/users', name: 'app_user')]
+    public function users(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $userCount = $entityManager->getRepository(User::class)->count([]);
+        $usersList = $entityManager->getRepository(User::class)->findAll();
+        
+        //dump($usersList);
+
+        
+        return $this->render('admin/users/users.html.twig', [
+            'homeInformations' => [
+                'userCount' => $userCount,
+                'usersList' => $usersList,
+            ],
+        ]);
+    }
+
+    #[Route('/admin/user/{id}', name: 'app_users_show', methods: ['GET'])]
+    public function show(User $user): Response
+    {
+        return $this->render('admin/users/show.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/admin/user/{id}/edit', name: 'app_admin_users_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_user', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('admin/users/edit.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+    #[Route('/admin/user/{id}', name: 'app_delete', methods: ['POST'])]
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_admin_users_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    
 }
