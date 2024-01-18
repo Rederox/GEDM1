@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\accessFDS;
+use App\Entity\Notification;
 use App\Entity\Product;
 
 class HomeController extends AbstractController
@@ -17,9 +18,13 @@ class HomeController extends AbstractController
     public function index(EntityManagerInterface $em, Request $request): Response
     {
         $getUserId = $this->getUser()->getId();
+        $notifications = $em->getRepository(Notification::class)->findBy(['user' => $getUserId]);
+        // dump($notifications);
+
         $files = $em->getRepository(accessFDS::class)->findBy(['user' => $getUserId]);
         return $this->render('home/index.html.twig', [
             'files' => $files,
+            'notifications' => $notifications,
         ]);
     }
 
