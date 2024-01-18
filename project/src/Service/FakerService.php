@@ -1,7 +1,7 @@
 <?php
 
 // src/Service/FakerService.php
-namespace App\Services;
+namespace App\Service;
 
 use App\Entity\Product;
 use Faker\Factory;
