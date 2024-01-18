@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block body %}
+	<div class="my-5">
+		<div class="row g-0 align-items-center">
+			<div class="col-lg-6">
+				<div class="p-5">
+					<h2 class="fw-bold mb-5 text-darkBlue">INSCRIPTION</h2>
+					{{ form_errors(registrationForm) }}
+
+					{{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+
+					<div class="form-floating mb-4">
+						{{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email', 'id': 'registrationForm_email'}}) }}
+						<label for="registrationForm_email">Email</label>
+						{{ form_errors(registrationForm.email) }}
+					</div>
+
+					<div class="form-floating mb-4">
+						{{ form_widget(registrationForm.first_name, {'attr': {'class': 'form-control', 'placeholder': 'Prénom', 'id': 'registrationForm_first_name'}}) }}
+						<label for="registrationForm_first_name">Prénom</label>
+						{{ form_errors(registrationForm.first_name) }}
+					</div>
+
+					<div class="form-floating mb-4">
+						{{ form_widget(registrationForm.last_name, {'attr': {'class': 'form-control', 'placeholder': 'Nom', 'id': 'registrationForm_last_name'}}) }}
+						<label for="registrationForm_last_name">Nom</label>
+						{{ form_errors(registrationForm.last_name) }}
+					</div>
+
+					<div class="form-floating mb-4">
+						{{ form_widget(registrationForm.password, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe', 'id': 'registrationForm_password'}}) }}
+						<label for="registrationForm_password">Mot de passe</label>
+						{{ form_errors(registrationForm.password) }}
+					</div>
+
+					<div class="form-floating mb-4">
+						{{ form_widget(registrationForm.confirm_password, {'attr': {'class': 'form-control', 'placeholder': 'Confirmez le mot de passe', 'id': 'registrationForm_confirm_password'}}) }}
+						<label for="registrationForm_confirm_password">Confirmez le mot de passe</label>
+						{{ form_errors(registrationForm.confirm_password) }}
+					</div>
+
+					<button type="submit" class="btn btn-darkBlue w-100">Inscription</button>
+
+					{{ form_end(registrationForm) }}
+					<hr class="my-4">
+					<p class="text-center mt-3 mb-0">
+						Vous avez déjà un compte ?
+						<a href="{{ path('app_login')}}"> Connectez-vous </a>
+					</p>
+				</div>
+			</div>
+			<div class="col-lg-6 d-none d-lg-block">
+				<div class="p-5">
+					<img src="{{ asset('assets/images/login.svg') }}" alt="Register Visual" class="img-fluid">
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
