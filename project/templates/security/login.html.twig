@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+
+<style>
+    body {
+        overflow-y: hidden;
+    }
+</style>
+
+
+
+<div class="my-5">
+    <div class="row g-0 align-items-center">
+        <div class="col-lg-6">
+            <div class="p-5">
+                <h2 class="fw-bold mb-5 text-darkBlue">CONNEXION</h2>
+                {% if error != null %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <form action="{{ path('app_login')}}" method="POST">
+                    <div class="form-floating mb-4">
+                        <input type="email" id="email" name="_username" class="form-control" placeholder="name@example.com" value="{{ username }}"/>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="password" id="pwd" name="_password" placeholder="" class="form-control"/>
+                        <label class="form-label" for="pwd">Mot de passe</label>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <div class="d-flex justify-content-between mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe"> Se souvenir </label>
+                        </div>
+                        <a href="#PasDispo" class="text-darkBlue">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-darkBlue w-100">Se connecter</button>
+                    <hr class="my-4">
+                    <p class="text-center mt-3 mb-0">
+                        Vous n'avez pas de compte ?
+                     <a href="{{ path('app_register')}}">Créer votre compte</a>
+                     </p>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6 d-none d-lg-block">
+            <div class="p-5">
+                <img src="{{ asset('assets/images/login.svg') }}" alt="Login Visual" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -40,7 +40,9 @@ La base de données est conçue pour stocker les informations des utilisateurs, 
 ### Guide d'installation
 
 ```
-git clone https://github.com/Rederox/GEDM1.git .
+git clone https://github.com/Rederox/GEDM1.git
+
+cd GEDM1
 
 docker-compose build
 
