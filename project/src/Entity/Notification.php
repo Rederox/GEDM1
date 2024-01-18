@@ -15,7 +15,7 @@ class Notification
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
-    private ?file $file = null;
+    private ?File $file = null;
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
     private ?User $user = null;
@@ -34,12 +34,12 @@ class Notification
         return $this->id;
     }
 
-    public function getFileId(): ?file
+    public function getFileId(): ?File
     {
         return $this->file;
     }
 
-    public function setFileId(?file $file): static
+    public function setFileId(?File $file): static
     {
         $this->file = $file;
 
