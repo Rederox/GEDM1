@@ -63,6 +63,10 @@
     align-items: center;
 }
 
+.file-card:hover {
+    cursor: pointer;
+}
+
 .file-card_image {
     display: flex;
     justify-content: center;
@@ -100,17 +104,38 @@
 		<div class="col home-content">
 			<h1 class="title">Mes fiches</h1>
             <div class="home-grid">
-            {# {% for product in products %} #}
-                <div class="file-card">
-                    <h2>test</h1>
-                    <div class="file-card_image">
-                        <img src="test}" alt="test">
+                {% for file in files %}
+                    <div class="file-card" data-url="{{ file.getProductId().getFile() }}">
+                        <h2>{{ file.getProductId().getProductName() }}</h2>
+                        <div class="file-card_image">
+                            <img src="{{ file.getProductId().getImageUrl() }}" alt="{{ file.getProductId().getProductName() }}">
+                        </div>
                     </div>
-                </div>
-            {# {% endfor %} #}
+                {% endfor %}
             </div>
 		</div>
         <div class="blue-square-background"></div>
         <div class="violet-square-background"></div>
 	</div>
+
+<script>
+
+// download file from url given in parameter and save it in the downloads folder of the user
+function downloadFile(url) {
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = url.substr(url.lastIndexOf('/') + 1);
+    link.click();
+}
+// use downloadFile function on click on the download file-card element
+document.querySelectorAll('.file-card').forEach(item => {
+        item.addEventListener('click', event => {
+            var imageUrl = item.getAttribute('data-url');
+            downloadFile(imageUrl);
+        })
+    });
+
+
+</script>
+
 {% endblock %}
