@@ -2,11 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
+
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +21,7 @@ class AdminController extends AbstractController
     #[Route('/admin', name: 'acceuil_admin')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $userCount = $entityManager->getRepository(User::class)->count(['role' => 'ROLE_USER']);
+        $userCount = $entityManager->getRepository(User::class)->count([]);
         $productCount = $entityManager->getRepository(Product::class)->count([]);
         return $this->render('admin/index.html.twig', [
             'homeInformations' => [

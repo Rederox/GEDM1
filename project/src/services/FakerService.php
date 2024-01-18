@@ -1,11 +1,10 @@
 <?php
 
 // src/Service/FakerService.php
-namespace App\Service;
+namespace App\Services;
 
 use App\Entity\Product;
 use Faker\Factory;
-use Faker\Provider\fr_FR\Person;
 
 class FakerService
 {
