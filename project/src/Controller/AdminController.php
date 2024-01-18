@@ -17,6 +17,8 @@ use Knp\Component\Pager\PaginatorInterface;
 
 use Symfony\Component\HttpFoundation\File\File;
 use App\Form\UserType;
+use App\Entity\AccessFDS;
+use App\Service\NotificationService;
 
 
 
@@ -105,10 +107,9 @@ class AdminController extends AbstractController
 
             // Obtenez la liste des utilisateurs ayant accès à ce produit
             $users = $em->getRepository(AccessFDS::class)->findBy(['product' => $product->getId()]);
-            $file = $product->getFile();
 
             foreach ($users as $access) {
-                $notificationService->createNotification($file, $access->getUserId(), "Le produit {$product->getProductName()} a été modifié.");
+                $notificationService->createNotification($product->getId(), $access->getUserId(), "Le produit {$product->getProductName()} a été modifié.");
             }
 
             $this->addFlash('success', 'Produit modifié avec succès');

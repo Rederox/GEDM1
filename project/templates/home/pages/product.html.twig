@@ -1,96 +1,95 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Hello HomeController!
+{% endblock %}
 
 {% block body %}
 
-<style>
-    .product-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        width: 100%;
-        margin-left: 15%;
-    }
-    .product-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        width: 50%;
-    }
+	<style>
+		.product-container {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			align-items: center;
+			width: 100%;
+			margin-left: 15%;
+		}
+		.product-content {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: flex-start;
+			width: 50%;
+		}
 
-    .product-content h1 {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 5rem;
-    }
+		.product-content h1 {
+			font-size: 2rem;
+			font-weight: bold;
+			margin-bottom: 5rem;
+		}
 
-    .product-text {
-        margin-bottom: 2rem;
-    }
+		.product-text {
+			margin-bottom: 2rem;
+		}
 
-    .product-text h2 {
-        margin-bottom: 1rem;
-    }
-    .product-text p {
-        font-size: 1rem;
-        font-weight: normal;
-    }
-    .download {
-        margin-left: 22.5%;
-    }
-    .product-download {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 40%;
-        height: 5rem;
-        background-color: #F2F2F2;
-        border-radius: 5px;
-        margin-top: 1rem;
-    }
-    .product-download:hover {
-        background-color: #E0E0E0;
-        cursor: pointer;
-    }
+		.product-text h2 {
+			margin-bottom: 1rem;
+		}
+		.product-text p {
+			font-size: 1rem;
+			font-weight: normal;
+		}
+		.download {
+			margin-left: 22.5%;
+		}
+		.product-download {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 40%;
+			height: 5rem;
+			background-color: #F2F2F2;
+			border-radius: 5px;
+			margin-top: 1rem;
+		}
+		.product-download:hover {
+			background-color: #E0E0E0;
+			cursor: pointer;
+		}
+	</style>
 
-</style>
-
-    <div class="d-flex col flex-column w-100">
+	<div class="d-flex col flex-column w-100">
 		<div>
 			{% include 'home/components/sideBarHome.html.twig' %}
 		</div>
 
-        <div class="product-container">
-            <div class="product-content">
-                <h1 class="">{{ product.getProductName() }}</h1>
-                <div class"product-text">
-                    <h2 class="text-primary font-weight-bold">Nom du produit :</h2>
-                    <p>{{ product.getProductName() }}</p>
-                </div>
-                <div class"product-text">
-                    <h2 class="text-primary font-weight-bold">Description du produit :</h2>
-                    <p>{{ product.getDescription() }}</p>
-                </div>
-                <h2 class="text-primary font-weight-bold">Fiche de sécurité :</h2>
-                <div class="product-download">
-                    {% if product.getFile() is not empty %}
-                        <a href="{{ path('telecharger_pdf', {'url': product.getFile()}) }}" download="{{ product.getProductName() | default('nom_du_fichier.pdf') }}">
-                            <i class="bi bi-file-arrow-down-fill"></i>
-                            Télécharger la fiche de sécurité
-                        </a>
-                    {% else %}
-                        <!-- Handle the case where product URL is empty or not provided -->
-                        Aucun fichier disponible
-                        <i class="bi bi-file-arrow-down-fill"></i>
-                    {% endif %}
-                </div>
-            </div>
-            <div>
-                <img src="{{ product.getImageUrl() }}" alt="{{ product.getProductName() }}">
-            </div>
-        </div>
-    </div>
+		<div class="product-container">
+			<div class="product-content">
+				<h1>{{ product.getProductName() }}</h1>
+				<div class="product-text">
+					<h2 class="text-primary font-weight-bold">Nom du produit :</h2>
+					<p>{{ product.getProductName() }}</p>
+				</div>
+				<div class="product-text">
+					<h2 class="text-primary font-weight-bold">Description du produit :</h2>
+					<p>{{ product.getDescription() }}</p>
+				</div>
+				<h2 class="text-primary font-weight-bold">Fiche de sécurité :</h2>
+				<div class="product-download">
+					{% if product.getfdsName() is not empty %}
+						<a href="{{ path('telecharger_pdf', {'url': product.getfdsName()}) }}" class="btn btn-primary" target="_blank">
+							Visualiser la fiche de sécurité
+						</a>
+					{% else %}
+						Aucun fichier disponible
+						<i class="bi bi-file-exclamation-fill"></i>
+					{% endif %}
+				</div>
+			</div>
+			<div>
+				<img src="{{ vich_uploader_asset(product, 'imageFile') }}" alt="{{ product.getProductName() }}">
+			</div>
+		</div>
+
+	</div>
 {% endblock %}

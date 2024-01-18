@@ -93,7 +93,7 @@
 						</div>
 					</form>
 					<div>
-						<a href="add" class="btn btn-lightBlue p-0"><i class="bi bi-plus fs-3 text-white"></i></a>
+						<a href="{{path('add_product_admin')}}" class="btn btn-lightBlue p-0"><i class="bi bi-plus fs-3 text-white"></i></a>
 					</div>
 				</div>
 				<div class="d-flex col gap-4 m-4">
@@ -109,7 +109,7 @@
 										<div class="card-body text-start text-darkBlue">
 											<h5 class="card-title">{{ product.getProductName |capitalize }}</h5>
 											<p class="description">{{product.description}}</p>
-											<a href="edit/{{product.id}}" class="stretched-link"></a>
+											<a href="{{path('edit_product_admin',{'id': product.id} )}}" class="stretched-link"></a>
 										</div>
 									</div>
 								{% endfor %}

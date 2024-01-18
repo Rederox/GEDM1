@@ -13,26 +13,30 @@ use App\Entity\Notification;
 use App\Entity\Product;
 use Knp\Component\Pager\PaginatorInterface;
 
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\KernelInterface;
+
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
     public function index(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator): Response
-    {   
-        $getUserId = $this->getUser()->getId();
+    {
+        $getUserId = $this->getUser();
         $notifications = $em->getRepository(Notification::class)->findBy(['user' => $getUserId]);
         // dump($notifications);
         $searchTerm = $request->query->get('search', '');
 
         $queryBuilder = $em->getRepository(accessFDS::class)->createQueryBuilder('a')
-                  ->leftJoin('a.product', 'p') // Ensure this association is correctly defined in your entity
-                  ->where('a.user = :user')
-                  ->setParameter('user', $getUserId);
+            ->leftJoin('a.product', 'p') // Ensure this association is correctly defined in your entity
+            ->where('a.user = :user')
+            ->setParameter('user', $getUserId);
 
-if (!empty($searchTerm)) {
-    $queryBuilder->andWhere('p.product_name LIKE :term')
-                 ->setParameter('term', '%' . $searchTerm . '%');
-}
+        if (!empty($searchTerm)) {
+            $queryBuilder->andWhere('p.product_name LIKE :term')
+                ->setParameter('term', '%' . $searchTerm . '%');
+        }
 
 
         // Paginate the query
@@ -40,7 +44,7 @@ if (!empty($searchTerm)) {
         $pagination = $paginator->paginate(
             $queryBuilder,
             $page,
-            8          
+            8
         );
 
         // $files = $em->getRepository(accessFDS::class)->findBy(['user' => $getUserId]);
@@ -53,8 +57,15 @@ if (!empty($searchTerm)) {
     // Dynamic route for product page (product/{id})
     #[Route('/product/{id}', name: 'product_client')]
     public function product(EntityManagerInterface $em, Request $request, $id): Response
-    {
+    {   
+        $getUserId = $this->getUser();
         $product = $em->getRepository(Product::class)->find($id);
+        $accessFDS = $em->getRepository(accessFDS::class)->findOneBy(['user' => $getUserId, 'product' => $product]);
+    
+        if ($accessFDS == null) {
+            return $this->redirectToRoute('homepage');
+        }
+
         return $this->render('home/pages/product.html.twig', [
             'product' => $product,
             'id' => $id,
@@ -68,20 +79,25 @@ if (!empty($searchTerm)) {
     }
 
     #[Route("/telecharger-pdf/{url}", name: 'telecharger_pdf')]
-    public function telecharger($url): Response
+    public function telecharger(string $url, KernelInterface $kernel): Response
     {
-        // Implement the logic to fetch the PDF file based on the URL
-        // For example, if your PDFs are stored in a specific directory, you can use that.
+        // Assuming PDFs are stored in 'public/images/products/', adjust if necessary
+        $projectDir = $kernel->getProjectDir();
+        $cheminFichier = $projectDir . '/public/images/products/' . $url;
 
-        // A changer 
-        $cheminFichier = '/chemin/vers/votre/dossier/' . $url;
+        // Check if file exists and is readable
+        if (!is_readable($cheminFichier)) {
+            throw new FileNotFoundException('File not found or not readable: ' . $url);
+        }
 
-        $response = new Response();
+        // Read the file content
+        $content = file_get_contents($cheminFichier);
+
+        // Create and return the response
+        $response = new Response($content);
         $response->headers->set('Content-Type', 'application/pdf');
         $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($url) . '"');
-        $response->setContent(file_get_contents($cheminFichier));
 
         return $response;
     }
-
 }
