@@ -13,7 +13,8 @@
                 <div class="text-center"><h1>Modifier un produit</h1></div>
             <div class="form-container d-flex justify-content-around col-12">
                 {% include "admin/fds/_form.html.twig" %}
-				 <div class="img-box">
+				 <div>
+				 <img src="{{ vich_uploader_asset(product, 'imageFile') }}" class="imgCard" alt="#">
      			</div>
             </div>
         </section>
