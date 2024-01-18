@@ -44,7 +44,7 @@
 		.home-grid {
 			display: flex;
 			flex-wrap: wrap;
-			justify-content: space-around;
+			justify-content: space-between;
 			align-items: stretch;
 			padding: 20px;
 		}
@@ -84,9 +84,10 @@
 		}
 
 		.file-card_image img {
-			max-width: 200px;
-			height: auto;
+			width: 200px;
+			height: 290px;
 			border-radius: 40px;
+			object-fit: cover;
 		}
 
 		.bell {
@@ -182,7 +183,7 @@
 						<a class="file-card" href="{{ path('product_client', {'id': file.getProductId().getId()}) }}" class="file-card">
 							<h2>{{ file.getProductId().getProductName() }}</h2>
 							<div class="file-card_image">
-								<img src="{{ file.getProductId().getImageUrl() }}" alt="{{ file.getProductId().getProductName() }}">
+								<img class="img-fluid img-thumbnail" src="{{ file.getProductId().getImageUrl() }}" alt="{{ file.getProductId().getProductName() }}">
 							</div>
 						</a>
 					</div>
