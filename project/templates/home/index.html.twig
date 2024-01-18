@@ -44,17 +44,22 @@
 		.home-grid {
 			display: flex;
 			flex-wrap: wrap;
-			justify-content: space-around;
-			align-items: stretch;
-			padding: 20px;
+			justify-content: flex-start;
+			align-items: center;
+			gap: 50px;
+			max-width: 1200px;
+			
 		}
 
 		.home-item {
 			text-align: center;
-			padding: 20px;
-			margin: 10px;
-			flex: 1 0 200px; /* flex-grow, flex-shrink, flex-basis */
-			box-sizing: border-box;
+		}
+
+		.home-item:hover {
+			scale: 1.1;
+			cursor: pointer;
+			transition: 0.3s ease-in-out;
+			shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 		}
 
 		.file-card {
@@ -62,6 +67,8 @@
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+            text-decoration: none;
+            color: black;
 		}
 
 		.file-card:hover {
@@ -82,9 +89,10 @@
 		}
 
 		.file-card_image img {
-			max-width: 200px;
-			height: auto;
+			width: 200px;
+			height: 290px;
 			border-radius: 40px;
+			object-fit: cover;
 		}
 
 		.bell {
@@ -116,6 +124,11 @@
 			color: #758BFD;
 		}
 
+		.searchInput {
+			width: 100% !important;
+			max-width: 500px !important;
+		}
+
 		/* Responsive styling using media query */
 		@media(max-width: 768px) {
 			.file-card {
@@ -129,6 +142,7 @@
 				max-width: 100%; /* Make the image take up the full width of its container */
 				height: auto; /* Maintain the aspect ratio */
 			}
+			
 		}
 	</style>
 
@@ -173,70 +187,62 @@
 
 
 		<div class="col home-content position relative">
-			<h1 class="title">Mes fiches</h1>
+			<h1 class="title m-0 mb-3">Mes fiches</h1>
+			<form action="{{ path('homepage') }}" method="get" class="searchInput d-flex justify-content-center align-items-center mb-3">
+				<div class="input-group border rounded-pill p-1 ">
+					<input type="search" name="search" placeholder="Rechercher" aria-describedby="button-addon3" class="form-control bg-transparent shadow-none text-white border-0" value="{{ app.request.query.get('search') }}">
+					<div class="input-group-append  border-0">
+						<button id="button-addon3" type="submit" class="btn btn-link text-dark fs-5">
+							<i class="bi bi-search"></i>
+						</button>
+					</div>
+				</div>
+			</form>
 			<div class="home-grid">
 				{% for file in files %}
 					<div class="home-item">
-						<div class="file-card" data-url="{{ file.getProductId().getFile() }}">
+						<a class="file-card" href="{{ path('product_client', {'id': file.getProductId().getId()}) }}" class="file-card">
 							<h2>{{ file.getProductId().getProductName() }}</h2>
 							<div class="file-card_image">
-								<img src="{{ file.getProductId().getImageUrl() }}" alt="{{ file.getProductId().getProductName() }}">
+								<img class="img-fluid img-thumbnail" src="{{ file.getProductId().getImageUrl() }}" alt="{{ file.getProductId().getProductName() }}">
 							</div>
-						</div>
+						</a>
 					</div>
 				{% endfor %}
+			</div>
+			<div class="pagination_rounded">
+				<ul
+					class="d-flex col justify-content-center pagination text-center gap-3">
+					{# Pagination précédente #}
+					{% if files.currentPageNumber > 1 %}
+						<li class="page-item pageLi">
+							<a href="{{ path('homepage', {'page': files.currentPageNumber - 1}) }}" class="pageChanger">
+								<i class="bi bi-chevron-left"></i>
+							</a>
+						</li>
+					{% endif %}
+
+					{# Boucle sur les pages de pagination #}
+					{% for page in 1..files.pageCount %}
+						<li class="page-item pageLi {{ page == files.currentPageNumber ? 'active' : '' }}">
+							<a href="{{ path('homepage', {'page': page}) }}" class="pageChanger">{{ page }}</a>
+						</li>
+					{% endfor %}
+
+					{# Pagination suivante #}
+					{% if files.currentPageNumber < files.pageCount %}
+						<li class="page-item pageLi">
+							<a href="{{ path('homepage', {'page': files.currentPageNumber + 1}) }}" class="pageChanger">
+								<i class="bi bi-chevron-right"></i>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
 			</div>
 		</div>
 		<div class="blue-square-background"></div>
 		<div class="violet-square-background"></div>
 	</div>
-
-	<script>
-
-		// download file from url given in parameter and save it in the downloads folder of the user
-function downloadFile(url) {
-var link = document.createElement('a');
-link.href = url;
-link.download = url.substr(url.lastIndexOf('/') + 1);
-link.click();
-}
-// use downloadFile function on click on the download file-card element
-document.querySelectorAll('.file-card').forEach(item => {
-item.addEventListener('click', event => {
-var imageUrl = item.getAttribute('data-url');
-downloadFile(imageUrl);
-})
-});
-
-    document.addEventListener('DOMContentLoaded', function() {
-    var closeButtons = document.querySelectorAll('.closeButton');
-
-    closeButtons.forEach(function(button) {
-        button.addEventListener('click', function(event) {
-            var notificationDiv = this.closest('.notification-item');
-            var notificationId = notificationDiv.getAttribute('data-notification-id');
-            event.stopPropagation();
-            fetch('/api/notification/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ notificationId: notificationId }) // Modification ici
-            })
-            .then(response => response.json())
-            .then(data => {
-                notificationDiv.remove();
-                var messageLength = document.getElementById('messageLength');
-                messageLength.innerHTML = messageLength.innerHTML - 1;
-            })
-            .catch((error) => {
-                // Gérer les erreurs
-                console.error('Error:', error);
-            });
-        });
-    });
-});
-	</script>
 
 
 {% endblock %}
