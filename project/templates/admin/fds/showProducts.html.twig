@@ -4,15 +4,164 @@
 {% endblock %}
 
 {% block body %}
+	<style>
+		.searchInput {
+			width: 100% !important;
+			max-width: 500px !important;
+		}
+		.boxProducts {
+			width: 94%;
+			height: 100%;
+			padding: 20px;
+			border-radius: 20px;
+			background-color: #fff;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			transition: 0.5s;
+			
+		}
+		.boxPagination {
+			width: 60px;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position:sticky;
+			height: 80vh;
+			top: 0;
+		}
+		.pageChanger {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			text-decoration: none;
+			color: #000;
+			font-weight: 500;
+			font-size: 18px;
+			transition: 0.5s;
+		}
+		.pageLi:hover .pageChanger {
+			color: #fff;
+			background-color: rgb(117, 139, 253);
+			border-radius: 20%;
+		}
+		.active .pageChanger {
+			color: #fff;
+			background-color: rgb(117, 139, 253);
+			border-radius: 20%;
+		}
+		.imgCard {
+			width: 97%;
+			height: 210px;
+			object-fit: cover;
+			border-radius: 20px;
+			margin-top: 5px;
+		}
+		.description {
+			font-size: 14px;
+			font-weight: 500;
+			color: #000;
+			width: 100%;
+			height: 60px; /* Hauteur automatique */
+			overflow: hidden;
+			line-height: 1.4; /* Ajustez selon l'espacement des lignes */
+		}
+		.card:hover {
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+			transform: scale(1.02);
+		}
+	</style>
+
 	<div class="d-flex col">
 		<div>
 			{% include 'admin/components/sideBar.html.twig' %}
 		</div>
 		<div class="col">
 			<h1 class="text-center">Liste FDS</h1>
-            <div class="d-flex justify-content-center bg-dark">
-			
-            </div>
+			<div class="d-flex row justify-content-center align-items-center">
+
+				<div class="d-flex justify-content-center align-items-center gap-3 w-100">
+					<form action="{{ path('products_admin') }}" method="get" class="searchInput d-flex justify-content-center align-items-center">
+						<div class="input-group border rounded-pill p-1 ">
+							<input type="search" name="search" placeholder="Rechercher" aria-describedby="button-addon3" class="form-control bg-none border-0" value="{{ app.request.query.get('search') }}">
+							<div class="input-group-append border-0">
+								<button id="button-addon3" type="submit" class="btn btn-link text-dark fs-5">
+									<i class="bi bi-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					<div>
+						<a href="add" class="btn btn-lightBlue p-0"><i class="bi bi-plus fs-3 text-white"></i></a>
+					</div>
+				</div>
+				<div class="d-flex col gap-4 m-4">
+					<div class="boxProducts text-center bg-lightGray rounded-3">
+						<div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+							{% if pagination.items|length == 0 %}
+								<div class="h4">Aucun produit trouvé.</div>
+							{% else %}
+								{% for product in pagination %}
+
+									<div role="button" class="card pointer-cursor p-0 d-flex row justify-content-center align-items-center m-2" style="width: 18rem;">
+										<img src="{{ asset(product.imageUrl) }}" class="imgCard" alt="{{product.getProductName }}">
+										<div class="card-body text-start text-darkBlue">
+											<h5 class="card-title">{{ product.getProductName |capitalize }}</h5>
+											<p class="description">{{product.description}}</p>
+											<a href="edit/{{product.id}}" class="stretched-link"></a>
+										</div>
+									</div>
+								{% endfor %}
+							{% endif %}
+						</div>
+					</div>
+					<div class="bg-lightGray boxPagination rounded-3">
+						<div class="pagination_rounded">
+							<ul
+								class="d-flex row justify-content-center pagination text-center gap-3">
+								{# Pagination précédente #}
+								{% if pagination.currentPageNumber > 1 %}
+									<li class="page-item pageLi">
+										<a href="{{ path('products_admin', {'page': pagination.currentPageNumber - 1}) }}" class="pageChanger">
+											<i class="bi bi-chevron-up"></i>
+										</a>
+									</li>
+								{% endif %}
+
+								{# Boucle sur les pages de pagination #}
+								{% for page in 1..pagination.pageCount %}
+									<li class="page-item pageLi {{ page == pagination.currentPageNumber ? 'active' : '' }}">
+										<a href="{{ path('products_admin', {'page': page}) }}" class="pageChanger">{{ page }}</a>
+									</li>
+								{% endfor %}
+
+								{# Pagination suivante #}
+								{% if pagination.currentPageNumber < pagination.pageCount %}
+									<li class="page-item pageLi">
+										<a href="{{ path('products_admin', {'page': pagination.currentPageNumber + 1}) }}" class="pageChanger">
+											<i class="bi bi-chevron-down"></i>
+										</a>
+									</li>
+								{% endif %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchInput = document.querySelector('[name="search"]');
+
+        searchInput.addEventListener('input', function () {
+            var form = this.closest('form');
+            clearTimeout(window.searchTimer);
+            window.searchTimer = setTimeout(function () {
+                form.submit();
+            }, 500); // Attend 500 ms après la dernière frappe pour envoyer la requête
+        });
+    });
+</script>
 {% endblock %}

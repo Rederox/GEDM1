@@ -37,3 +37,26 @@ La base de données est conçue pour stocker les informations des utilisateurs, 
 
 ## Maquette (Mockup)
 
+### Guide d'installation
+
+```
+git clone https://github.com/Rederox/GEDM1.git
+
+cd GEDM1
+
+docker-compose build
+
+docker-compose up -d
+
+cd project
+
+npm install
+
+npm run dev-server
+
+docker exec -it symfony bash
+
+#! Docker container command
+
+composer install
+```
