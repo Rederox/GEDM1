@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use App\Entity\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -53,12 +54,12 @@ class Product
         return $this;
     }
 
-    public function getFileId(): ?File
+    public function getFile(): ?File
     {
         return $this->file;
     }
 
-    public function setFileId(?File $file): static
+    public function setFile(?File $file): static
     {
         $this->file = $file;
 

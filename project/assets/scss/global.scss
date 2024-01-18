@@ -9,4 +9,28 @@ body {
 
 .test{
     color: rgb(255, 255, 255);
-}   
+}
+
+.img-box {
+        height:300px;
+        width:400px;
+        background-image: url(https://www.labeautefrancaise.com/images/products/default.png);
+        background-position: 50% 50%;
+        border-radius:10px;
+}
+
+.form-container {
+    background-color: $light;
+    border-radius: 10px ;
+    padding:50px;
+    margin:10px;
+}
+
+.product-form label {
+    font-weight:700;
+}
+
+.product-form {
+    margin-bottom:20px;
+    margin-top: 20px;
+}

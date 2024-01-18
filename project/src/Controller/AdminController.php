@@ -8,8 +8,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Product;
+use App\Form\ProductsType;
+use App\Repository\ProductRepository;
 use Knp\Component\Pager\PaginatorInterface;
+
 
 class AdminController extends AbstractController
 {
@@ -51,18 +58,54 @@ class AdminController extends AbstractController
 
 
     #[Route('admin/products/add', name: 'add_product_admin')]
-    public function addProduct(): Response
+    public function addProduct(EntityManagerInterface $em, Request $request): Response
     {
+        $product = new Product();
+
+        $productForm = $this->createForm(ProductsType::class, $product);
+
+        $productForm->handleRequest($request);
+
+        if($productForm->isSubmitted() && $productForm->isValid()){
+
+        $file = $form->get('file')->getData();
+        
+        $em->persist($product);
+        $em->flush();
+
+        
+        }
+
+        $this->addFlash('success', 'Produit ajouté avec succès');
+
+    
+       
         return $this->render('admin/fds/addProduct.html.twig', [
-            'controller_name' => 'AdminController',
+            'productForm' => $productForm->createView()
         ]);
     }
 
-    #[Route('admin/products/edit', name: 'edit_product_admin')]
-    public function editProduct(): Response
+    #[Route('admin/products/edit/{id}', name: 'edit_product_admin')]
+    public function editProduct(Product $product, Request $request, EntityManagerInterface $em): Response
     {
+        $productForm = $this->createForm(ProductsType::class, $product);
+
+        $productForm->handleRequest($request);
+
+        if($productForm->isSubmitted() && $productForm->isValid()){
+
+        $em->persist($product);
+        $em->flush();
+
+        }
+
+        $this->addFlash('success', 'Produit modifié avec succès');
+
+
+
         return $this->render('admin/fds/editProduct.html.twig', [
-            'controller_name' => 'AdminController',
+            'productForm' => $productForm->createView(),
+            'product' => $product,
         ]);
     }
 }
