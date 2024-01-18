@@ -5,37 +5,22 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\accessFDS;
+use App\Entity\Product;
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
-    public function index(): Response
+    public function index(EntityManagerInterface $em, Request $request): Response
     {
-        return $this->render('home/index.html.twig');
-    }
-
-    #[Route('/category', name: 'category')]
-    public function category(): Response
-    {
-        return $this->render('home/pages/category.html.twig');
-    }
-
-    #[Route('/files', name: 'files')]
-    public function files(): Response
-    {
-        return $this->render('home/pages/files.html.twig');
-    }
-
-    #[Route('/download', name: 'download')]
-    public function download(): Response
-    {
-        return $this->render('home/pages/download.html.twig');
-    }
-
-    #[Route('/settings', name: 'settings')]
-    public function settings(): Response
-    {
-        return $this->render('home/pages/settings.html.twig');
+        $getUserId = $this->getUser()->getId();
+        $files = $em->getRepository(accessFDS::class)->findBy(['user' => $getUserId]);
+        return $this->render('home/index.html.twig', [
+            'files' => $files,
+        ]);
     }
 
     #[Route('/help', name: 'help')]

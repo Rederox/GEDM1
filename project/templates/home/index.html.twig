@@ -40,6 +40,67 @@
 
 }
 
+.home-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: stretch;
+    padding: 20px;
+}
+
+.home-item {
+    text-align: center;
+    padding: 20px;
+    margin: 10px;
+    flex: 1 0 200px; /* flex-grow, flex-shrink, flex-basis */
+    box-sizing: border-box;
+}
+
+.file-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-card:hover {
+    cursor: pointer;
+}
+
+.file-card h2 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.file-card_image {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border-radius: 40px;
+}
+
+.file-card_image img {
+    max-width: 200px;
+    height: auto;
+    border-radius: 40px;
+}
+
+/* Responsive styling using media query */
+@media (max-width: 768px) {
+    .file-card {
+        max-width: 100%; /* Make the card take up the full width on smaller screens */
+    }
+}
+
+/* Set max-width for the image to make it responsive */
+@media (max-width: 480px) {
+    .file-card_image img {
+        max-width: 100%; /* Make the image take up the full width of its container */
+        height: auto; /* Maintain the aspect ratio */
+    }
+}
+
 </style>
 
     <div class="d-flex col">
@@ -47,12 +108,42 @@
 			{% include 'home/components/sideBarHome.html.twig' %}
 		</div>
 		<div class="col home-content">
-			<h1 class="title">Accueil</h1>
+			<h1 class="title">Mes fiches</h1>
             <div class="home-grid">
-                
+                {% for file in files %}
+                    <div class="home-item">
+                        <div class="file-card" data-url="{{ file.getProductId().getFile() }}">
+                            <h2>{{ file.getProductId().getProductName() }}</h2>
+                            <div class="file-card_image">
+                                <img src="{{ file.getProductId().getImageUrl() }}" alt="{{ file.getProductId().getProductName() }}">
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
 		</div>
         <div class="blue-square-background"></div>
         <div class="violet-square-background"></div>
 	</div>
+
+<script>
+
+// download file from url given in parameter and save it in the downloads folder of the user
+function downloadFile(url) {
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = url.substr(url.lastIndexOf('/') + 1);
+    link.click();
+}
+// use downloadFile function on click on the download file-card element
+document.querySelectorAll('.file-card').forEach(item => {
+        item.addEventListener('click', event => {
+            var imageUrl = item.getAttribute('data-url');
+            downloadFile(imageUrl);
+        })
+    });
+
+
+</script>
+
 {% endblock %}
