@@ -44,4 +44,22 @@ class HomeController extends AbstractController
     {
         return $this->render('home/pages/help.html.twig');
     }
+
+    #[Route("/telecharger-pdf/{url}", name: 'telecharger_pdf')]
+    public function telecharger($url): Response
+    {
+        // Implement the logic to fetch the PDF file based on the URL
+        // For example, if your PDFs are stored in a specific directory, you can use that.
+
+        // A changer 
+        $cheminFichier = '/chemin/vers/votre/dossier/' . $url;
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($url) . '"');
+        $response->setContent(file_get_contents($cheminFichier));
+
+        return $response;
+    }
+
 }

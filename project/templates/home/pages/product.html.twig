@@ -80,7 +80,14 @@
             </div>
         </div>
         <div class="product-download">
-            Telecharger la fiche de sécurité
+            {% if product.getFile() is not empty %}
+                <a href="{{ path('telecharger_pdf', {'url': product.getFile()}) }}" download="{{ product.getProductName() | default('nom_du_fichier.pdf') }}">
+                    Télécharger la fiche de sécurité
+                </a>
+            {% else %}
+                <!-- Handle the case where product URL is empty or not provided -->
+                Aucun fichier disponible
+            {% endif %}
         </div>
     </div>
 {% endblock %}
