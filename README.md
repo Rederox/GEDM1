@@ -20,7 +20,6 @@ Ce projet consiste à développer une GED (Gestion Électronique des Documents) 
 La base de données est conçue pour stocker les informations des utilisateurs, des produits, des FDS, et des notifications de mise à jour. Elle inclut les tables suivantes :
 - `User`: Informations sur les clients.
 - `Product`: Détails des produits chimiques vendus.
-- `File`: Fiches de données de sécurité (FDS) des produits.
 - `Notification`: Notifications envoyées aux clients pour les mises à jour des FDS.
 - `AccessFDS`: Enregistrements des accès des utilisateurs aux FDS des produits.
 
