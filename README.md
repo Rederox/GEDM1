@@ -59,4 +59,8 @@ docker exec -it symfony bash
 #! Docker container command
 
 composer install
+
+#! Instruction Faker
+
+php bin/console doctrine:fixtures:load
 ```
