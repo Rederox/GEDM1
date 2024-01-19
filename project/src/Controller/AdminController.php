@@ -70,26 +70,26 @@ class AdminController extends AbstractController
 
         $productForm->handleRequest($request);
 
-        if($productForm->isSubmitted() && $productForm->isValid()){
-        $product = $productForm->getData();
+        if ($productForm->isSubmitted() && $productForm->isValid()) {
+            $product = $productForm->getData();
 
 
-        
-        $em->persist($product);
-        $em->flush();
 
-        
-        
-        $this->addFlash('success', 'Produit ajouté avec succès');
+            $em->persist($product);
+            $em->flush();
 
-        return $this->redirectToRoute('products_admin');
+
+
+            $this->addFlash('success', 'Produit ajouté avec succès');
+
+            return $this->redirectToRoute('products_admin');
         }
 
-    
 
-        
-    
-       
+
+
+
+
         return $this->render('admin/fds/addProduct.html.twig', [
             'productForm' => $productForm->createView()
         ]);
@@ -105,11 +105,16 @@ class AdminController extends AbstractController
             $em->persist($product);
             $em->flush();
 
-            // Obtenez la liste des utilisateurs ayant accès à ce produit
-            $users = $em->getRepository(AccessFDS::class)->findBy(['product' => $product->getId()]);
+            // Get the list of users with access to this product
+            $accessEntries = $em->getRepository(AccessFDS::class)->findBy(['product' => $product->getId()]);
 
-            foreach ($users as $access) {
-                $notificationService->createNotification($product->getId(), $access->getUserId(), "Le produit {$product->getProductName()} a été modifié.");
+            $notifiedUsers = [];
+            foreach ($accessEntries as $access) {
+                $userId = $access->getUserId()->getId();
+                if (!isset($notifiedUsers[$userId])) {
+                    $notificationService->createNotification($access->getProductId(), $access->getUserId(), "Le produit {$product->getProductName()} a été modifié.");
+                    $notifiedUsers[$userId] = true;
+                }
             }
 
             $this->addFlash('success', 'Produit modifié avec succès');
@@ -119,17 +124,17 @@ class AdminController extends AbstractController
             'productForm' => $productForm->createView(),
             'product' => $product,
         ]);
-
     }
+
     #[Route('admin/users', name: 'app_user')]
     public function users(Request $request, EntityManagerInterface $entityManager): Response
     {
         $userCount = $entityManager->getRepository(User::class)->count([]);
         $usersList = $entityManager->getRepository(User::class)->findAll();
-        
+
         //dump($usersList);
 
-        
+
         return $this->render('admin/users/users.html.twig', [
             'homeInformations' => [
                 'userCount' => $userCount,
@@ -166,12 +171,11 @@ class AdminController extends AbstractController
     #[Route('/admin/user/{id}', name: 'app_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_admin_users_index', [], Response::HTTP_SEE_OTHER);
     }
-
 }

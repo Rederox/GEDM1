@@ -9,10 +9,10 @@
 		.product-container {
 			display: flex;
 			flex-direction: row;
-			justify-content: space-around;
+			justify-content: space-between;
 			align-items: center;
 			width: 100%;
-			margin-left: 15%;
+            flex-wrap: wrap;
 		}
 		.product-content {
 			display: flex;
@@ -56,40 +56,70 @@
 			background-color: #E0E0E0;
 			cursor: pointer;
 		}
+
+		.imgCard {
+			width: 30%;
+            min-width: 20rem;
+            height: 26rem;
+            border-radius: 2.375rem;
+            margin: 2rem;
+			object-fit: cover;
+		}
+
+		.sideBarWidth {
+			min-width: 240px;
+			height: 100vh;
+		}
+
+        .righteous {
+            font-family: 'Righteous', regular;
+            font-weight: bold;
+        }
 	</style>
 
-	<div class="d-flex col flex-column w-100">
-		<div>
+	<div class="d-flex col w-100">
+		<div class="sideBarWidth">
 			{% include 'home/components/sideBarHome.html.twig' %}
 		</div>
-
-		<div class="product-container">
-			<div class="product-content">
-				<h1>{{ product.getProductName() }}</h1>
-				<div class="product-text">
-					<h2 class="text-primary font-weight-bold">Nom du produit :</h2>
-					<p>{{ product.getProductName() }}</p>
+		<div>
+			<div class="product-container">
+				<div class="product-content">
+					<div class="d-flex justify-content-center w-100">
+						<h1 class="text-darkBlue text-center righteous">{{ product.getProductName() }}</h1>
+					</div>
+					<div class="product-text">
+						<h2 class="text-darkBlue righteous">Nom du produit :</h2>
+						<p>{{ product.getProductName() }}</p>
+					</div>
+					<div class="product-text">
+						<h2 class="text-darkBlue righteous">Description du produit :</h2>
+						<p>{{ product.getDescription() }}</p>
+					</div>
 				</div>
-				<div class="product-text">
-					<h2 class="text-primary font-weight-bold">Description du produit :</h2>
-					<p>{{ product.getDescription() }}</p>
-				</div>
-				<h2 class="text-primary font-weight-bold">Fiche de sécurité :</h2>
-				<div class="product-download">
-					{% if product.getfdsName() is not empty %}
-						<a href="{{ path('telecharger_pdf', {'url': product.getfdsName()}) }}" class="btn btn-primary" target="_blank">
-							Visualiser la fiche de sécurité
-						</a>
-					{% else %}
-						Aucun fichier disponible
-						<i class="bi bi-file-exclamation-fill"></i>
-					{% endif %}
-				</div>
+				<div></div>
+				<img src="{{ vich_uploader_asset(product, 'imageFile') }}" class="imgCard" alt="{{ product.getProductName() }}">
 			</div>
-			<div>
-				<img src="{{ vich_uploader_asset(product, 'imageFile') }}" alt="{{ product.getProductName() }}">
+			<h2 class="text-darkBlue righteous">Fiche de sécurité :</h2>
+			<div class="w-100">
+				{% if product.getfdsName() is not empty %}
+					<div class="my-2 d-flex gap-3">
+						<a href="{{ path('telecharger_pdf', {'url': product.getfdsName()}) }}" download="{{ product.getfdsName() }}">
+							<button class="btn btn-darkBlue">
+								<i class="bi bi-download"></i>
+							</button>
+						</a>
+						<a href="{{ path('view_pdf', {'url': product.getfdsName()}) }}">
+							<button class="btn btn-darkBlue">
+								<i class="bi bi-eye"></i>
+							</button>
+						</a>
+					</div>
+					<embed src="{{ path('view_pdf', {'url': product.getfdsName()}) }}" type="application/pdf" width="100%" height="600px"/>
+				{% else %}
+					Aucun fichier disponible
+					<i class="bi bi-file-exclamation-fill"></i>
+				{% endif %}
 			</div>
 		</div>
-
 	</div>
 {% endblock %}

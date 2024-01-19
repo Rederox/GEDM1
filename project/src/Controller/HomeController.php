@@ -16,6 +16,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 
 class HomeController extends AbstractController
@@ -98,6 +99,23 @@ class HomeController extends AbstractController
         $response->headers->set('Content-Type', 'application/pdf');
         $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($url) . '"');
 
-        return $response;
+        return $this->file($cheminFichier, null, ResponseHeaderBag::DISPOSITION_INLINE);
+        // return $response;
     }
+
+    #[Route("/view-pdf/{url}", name: 'view_pdf')]
+    public function view(string $url, KernelInterface $kernel): Response
+    {
+        // Assuming PDFs are stored in 'public/images/products/', adjust if necessary
+        $projectDir = $kernel->getProjectDir();
+        $cheminFichier = $projectDir . '/public/images/products/' . $url;
+
+        // Check if file exists and is readable
+        if (!is_readable($cheminFichier)) {
+            throw new FileNotFoundException('File not found or not readable: ' . $url);
+        }
+
+        return $this->file($cheminFichier, null, ResponseHeaderBag::DISPOSITION_INLINE);
+    }
+
 }
