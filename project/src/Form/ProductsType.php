@@ -22,7 +22,10 @@ class ProductsType extends AbstractType
             ->add('description')
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Image du produit',
-                'required' => false
+                'required' => false,
+                'download_uri' => false,
+                'image_uri' => false, 
+                'allow_delete' => false,
             ])
 
             ->add('fdsFile', FileType::class, [

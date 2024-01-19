@@ -4,6 +4,19 @@
 {% endblock %}
 
 {% block body %}
+	<style>
+		.imgCard {
+			width: 30%;
+            min-width: 20rem;
+            height: 26rem;
+            border-radius: 2.375rem;
+            margin: 2rem;
+			object-fit: cover;
+			-webkit-box-shadow: 0px 0px 15px -2px #000000; 
+			box-shadow: 0px 0px 15px -2px #000000;
+		}
+	</style>
+
 	<div class="d-flex col">
 		<div>
 			{% include 'admin/components/sideBar.html.twig' %}
@@ -13,9 +26,9 @@
                 <div class="text-center"><h1>Modifier un produit</h1></div>
             <div class="form-container d-flex justify-content-around col-12">
                 {% include "admin/fds/_form.html.twig" %}
-				 <div>
+				 
 				 <img src="{{ vich_uploader_asset(product, 'imageFile') }}" class="imgCard" alt="#">
-     			</div>
+     			
             </div>
         </section>
     </main>

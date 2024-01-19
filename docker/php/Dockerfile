@@ -23,7 +23,5 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions amqp
-    
-RUN chown -R www-data:www-data public/images/products/
 
 WORKDIR /var/www/project
