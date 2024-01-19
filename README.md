@@ -13,7 +13,7 @@ Ce projet consiste à développer une GED (Gestion Électronique des Documents) 
 - **Framework**: Symfony 6.4
 - **Frontend**: Twig avec Bootstrap
 - **Base de données**: MySQL 8
-- **Autres outils**: Docker, PhpMyAdmin, MailHog
+- **Autres outils**: Docker, PhpMyAdmin
 
 ## Structure de la Base de Données
 
